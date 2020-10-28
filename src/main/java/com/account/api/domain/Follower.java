@@ -22,7 +22,7 @@ public class Follower extends CommonDateEntity {
     private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "follower_id", nullable = false)
+    @JoinColumn(name = "follower", nullable = false)
     private Account follower;
 
     private String confirm; // (승인 Y / 미승인 N)

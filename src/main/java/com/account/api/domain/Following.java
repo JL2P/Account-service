@@ -22,6 +22,6 @@ public class Following extends CommonDateEntity{
     private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "following_id", nullable = false)
+    @JoinColumn(name = "following", nullable = false)
     private Account following;
 }
