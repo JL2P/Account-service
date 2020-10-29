@@ -25,4 +25,10 @@ public class AccountDto {
     public AccountDto(Account account){
         BeanUtils.copyProperties(account, this);
     }
+
+    public Account toEntity(){
+        Account account = new Account();
+        BeanUtils.copyProperties(this,account);
+        return account;
+    }
 }

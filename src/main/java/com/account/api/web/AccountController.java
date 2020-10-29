@@ -2,11 +2,9 @@ package com.account.api.web;
 
 import com.account.api.domain.Account;
 import com.account.api.domain.service.AccountService;
+import com.account.api.web.dto.AccountDto;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +30,14 @@ public class AccountController {
         return accountService.getAccount(accountId);
     }
 
+    @PutMapping("edit/")
+    public Account modifyAccount(@RequestBody AccountDto accountDto){
+        Account account = accountDto.toEntity();
+        return accountService.modifyAccount(account);
+    }
 
+    @DeleteMapping("signout/{accountId}/")
+    public void deleteAccount(@PathVariable String accountId) {
+        accountService.deleteAccount(accountId);
+    }
 }
