@@ -33,7 +33,7 @@ public class FollowController {
         String myAccountId = followDto.getMyAccountId();
         String followAccountId = followDto.getFollowAccountId();
 
-        followService.confirm(myAccountId, followAccountId);
-
+        followService.accept(myAccountId, followAccountId);
     }
+
 }

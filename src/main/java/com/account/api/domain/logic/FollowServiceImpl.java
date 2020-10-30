@@ -54,7 +54,9 @@ public class FollowServiceImpl implements FollowService {
     /*
     * 하트 부분에서 승인하는거
     * */
-    public void confirm(String accountId, String followerId) {
+
+    //팔로우 요청 승인
+    public void accept(String accountId, String followerId) {
 
         //orElseThrow() => 객체가 있으면 객체반환 없으면 익셉션(예외처리) 실행.
         Follower findFollower = followerRepository.findByAccountAndFollower(accountId,followerId);
@@ -67,6 +69,16 @@ public class FollowServiceImpl implements FollowService {
         followingRepository.save(findFollowing);
     }
 
+    //팔로우 요청 거절
+    public void refuse(String accountId, String followerId) {
+
+        Follower findFollower = followerRepository.findByAccountAndFollower(accountId,followerId);
+        Following findFollowing =followingRepository.findByAccountAndFollowing(findFollower.getFollower(), findFollower.getAccount());
+
+        followerRepository.delete(findFollower);
+        followingRepository.delete(findFollowing);
+
+    }
 
 
 
