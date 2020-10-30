@@ -2,7 +2,7 @@ package com.account.api.web;
 
 import com.account.api.domain.Account;
 import com.account.api.domain.service.AccountService;
-import com.account.api.web.dto.AccountDto;
+import com.account.api.web.dto.AccountModifyDto;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +33,10 @@ public class AccountController {
 
     // account 수정
     @PutMapping("edit/")
-    public Account modifyAccount(@RequestBody AccountDto accountDto){
-        Account account = accountDto.toEntity();
+    public Account modifyAccount(@RequestBody AccountModifyDto accountModifyDto){
+        Account modifyAccount = accountService.getAccount(accountModifyDto.getAccountId());
+
+        Account account = accountModifyDto.toEntity(modifyAccount);
         return accountService.modifyAccount(account);
     }
 
