@@ -9,7 +9,7 @@ import com.account.api.repository.FollowingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
+
 @Service
 public class FollowServiceImpl implements FollowService {
 
@@ -22,22 +22,21 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public void follow(String account_id1, String account_id2, String myopenAt, String openAt) {
+    public void follow(String account_id1, String myopenAt, String account_id2, String openAt) {
 
         //여기다가 실제 팔로우 되는 기능을 구현한다.
         Follower follower = Follower.builder()
-                .account(account_id1)
-                .follower(account_id2)
+                .account(account_id2)
+                .follower(account_id1)
                 .confirm("N")
                 .build();
 
         Following following = Following.builder()
-                .account(account_id2)
-                .following(account_id1)
+                .account(account_id1)
+                .following(account_id2)
                 .confirm("N").build();
 
-        //  i cant hear anything...
-        //open check
+        // 공개계정일경우 자동으로 승인처리
         if(myopenAt.equals("Y")){
             follower.setConfirm("Y");
         }
@@ -46,7 +45,6 @@ public class FollowServiceImpl implements FollowService {
         }
 
         followerRepository.save(follower);
-
         followingRepository.save(following);
 
     }
@@ -56,17 +54,17 @@ public class FollowServiceImpl implements FollowService {
     /*
     * 하트 부분에서 승인하는거
     * */
-    public void addFollower(Follower follower, Long myId, Long followId) {
+    public void confirm(String accountId, String followerId) {
 
         //orElseThrow() => 객체가 있으면 객체반환 없으면 익셉션(예외처리) 실행.
-        Follower findFollower = followerRepository.findById(follower.getId()).orElseThrow();
-        //팔로우 요청을 승인했으면
-        if(findFollower.getConfirm() == "Y") {
-        //팔로워 리스트에 추가
-        followerId
-        }
-        //
+        Follower findFollower = followerRepository.findByAccountAndFollower(accountId,followerId);
+        Following findFollowing =followingRepository.findByAccountAndFollowing(findFollower.getFollower(), findFollower.getAccount());
 
+        findFollower.setConfirm("Y");
+        findFollowing.setConfirm("Y");
+
+        followerRepository.save(findFollower);
+        followingRepository.save(findFollowing);
     }
 
 
