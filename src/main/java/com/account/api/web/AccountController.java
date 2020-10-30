@@ -15,27 +15,30 @@ public class AccountController {
     //컨트롤러 구현 시작
     private final AccountService accountService;
 
-
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
+    // account 목록
     @GetMapping()
     public List<Account> getAccounts(){
         return accountService.getAccountList();
     }
 
+    // account
     @GetMapping("{accountId}/")
     public Account getAccount(@PathVariable String accountId) {
         return accountService.getAccount(accountId);
     }
 
+    // account 수정
     @PutMapping("edit/")
     public Account modifyAccount(@RequestBody AccountDto accountDto){
         Account account = accountDto.toEntity();
         return accountService.modifyAccount(account);
     }
 
+    // account 삭제
     @DeleteMapping("signout/{accountId}/")
     public void deleteAccount(@PathVariable String accountId) {
         accountService.deleteAccount(accountId);
