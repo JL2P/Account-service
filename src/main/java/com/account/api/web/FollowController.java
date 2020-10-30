@@ -35,5 +35,11 @@ public class FollowController {
 
         followService.accept(myAccountId, followAccountId);
     }
+    @PutMapping("/follow")
+    public void refuse(@RequestParam String myAccountId, @RequestParam String followAccountId) {
+
+        followService.refuse(myAccountId, followAccountId);
+
+    }
 
 }
