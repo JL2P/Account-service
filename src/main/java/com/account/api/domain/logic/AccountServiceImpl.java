@@ -19,6 +19,11 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
+    public void addAccount(Account account) {
+        accountRepository.save(account);
+    }
+
+    @Override
     public List<Account> getAccountList(){
         List<Account> accounts = accountRepository.findAll();
         return accounts;

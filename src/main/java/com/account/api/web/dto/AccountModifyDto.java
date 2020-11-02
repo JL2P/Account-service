@@ -21,11 +21,12 @@ public class AccountModifyDto {
 
     public Account toEntity(Account account){
         account.setAccountId(this.accountId);
-        account.setEmail(email);
-        account.setName(name);
-        account.setBirth(birth);
-        account.setGender(gender);
-        account.setIntroduce(introduce);
+        account.setImgUrl(account.getImgUrl());
+        account.setEmail(this.email);
+        account.setName(this.name);
+        account.setBirth(this.birth);
+        account.setGender(this.gender);
+        account.setIntroduce(this.introduce);
 
         return account;
     }

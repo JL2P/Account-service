@@ -2,6 +2,8 @@ package com.account.api.web;
 
 import com.account.api.domain.Account;
 import com.account.api.domain.service.AccountService;
+import com.account.api.web.dto.AccountAddDto;
+import com.account.api.web.dto.AccountDto;
 import com.account.api.web.dto.AccountModifyDto;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,13 @@ public class AccountController {
 
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    // 테스트를 위해 Account정보를 추가하는 기능 추가
+    @PostMapping()
+    public AccountAddDto addAccount(@RequestBody AccountAddDto accountAddDto){
+        accountService.addAccount(accountAddDto.toEntity());
+        return accountAddDto;
     }
 
     // account 목록

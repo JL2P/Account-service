@@ -25,6 +25,7 @@ public class Account extends CommonDateEntity {
     private String email;
 
     //미필수 컬럼
+    private String imgUrl;
     private String name;
     private String birth;
     private String gender;
@@ -32,7 +33,7 @@ public class Account extends CommonDateEntity {
 
     //세팅 컬럼
     private String loginType; // (NAVER, GOOGLE... )소셜 로그인 타입
-    private String openAt;    // (공계 Y / 미공개 N) 계정 공개여부
-    private String usedAt;    // (사용중 Y / 미사용 N)계정 사용여부
+    private String openAt = "Y";    // (공계 Y / 미공개 N) 계정 공개여부 (기본값 공개)
+    private String usedAt = "Y";    // (사용중 Y / 미사용 N)계정 사용여부 (기본값 사용중)
 
 }
