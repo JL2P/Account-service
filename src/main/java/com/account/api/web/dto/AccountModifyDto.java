@@ -18,6 +18,8 @@ public class AccountModifyDto {
     private String birth;
     private String gender;
     private String introduce;
+    private String openAt;
+
 
     public Account toEntity(Account account){
         account.setAccountId(this.accountId);
@@ -27,6 +29,7 @@ public class AccountModifyDto {
         account.setBirth(this.birth);
         account.setGender(this.gender);
         account.setIntroduce(this.introduce);
+        account.setOpenAt(openAt);
 
         return account;
     }
