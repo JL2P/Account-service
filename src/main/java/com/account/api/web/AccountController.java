@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = {"1. Account"})
 @RestController
@@ -30,23 +31,23 @@ public class AccountController {
 
     // account 목록
     @GetMapping()
-    public List<Account> getAccounts(){
-        return accountService.getAccountList();
+    public List<AccountDto> getAccounts(){
+        return accountService.getAccountList().stream().map(account->new AccountDto(account)).collect(Collectors.toList());
     }
 
     // account
     @GetMapping("{accountId}/")
-    public Account getAccount(@PathVariable String accountId) {
-        return accountService.getAccount(accountId);
+    public AccountDto getAccount(@PathVariable String accountId) {
+        return new AccountDto(accountService.getAccount(accountId));
     }
 
     // account 수정
     @PutMapping("edit/")
-    public Account modifyAccount(@RequestBody AccountModifyDto accountModifyDto){
+    public AccountDto modifyAccount(@RequestBody AccountModifyDto accountModifyDto){
         Account modifyAccount = accountService.getAccount(accountModifyDto.getAccountId());
 
         Account account = accountModifyDto.toEntity(modifyAccount);
-        return accountService.modifyAccount(account);
+        return new AccountDto(accountService.modifyAccount(account));
     }
 
     // account 삭제
