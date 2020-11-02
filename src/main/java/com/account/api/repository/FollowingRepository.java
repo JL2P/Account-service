@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FollowingRepository extends JpaRepository<Following,Long> {
     Following findByAccountAndFollowing(String account, String following);
-
+    Following findByFollowingList (String account, String openAt);
 }

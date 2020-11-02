@@ -9,6 +9,8 @@ import com.account.api.repository.FollowingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class FollowServiceImpl implements FollowService {
@@ -81,6 +83,16 @@ public class FollowServiceImpl implements FollowService {
     }
 
 
+    public List<Following> getFollowingList(String accountId, String accepted ){
+        List<Following> followings = (List<Following>) followingRepository.findByFollowingList(accountId, accepted);
+        return followings;
+    }
+
+
+    public List<Follower> getFollowerList(String accountId, String accepted ){
+        List<Follower> followers = (List<Follower>) followerRepository.findByFollowerList(accountId, accepted);
+        return followers;
+    }
 
 
 }
