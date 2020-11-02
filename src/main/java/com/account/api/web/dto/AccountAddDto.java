@@ -4,8 +4,10 @@ import com.account.api.domain.Account;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.beans.BeanUtils;
 
+@ToString
 @NoArgsConstructor
 @Setter
 @Getter
