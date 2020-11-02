@@ -24,6 +24,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account testLogin(String email, String password) {
+        return accountRepository.findByEmail(email);
+    }
+
+    @Override
     public List<Account> getAccountList(){
         List<Account> accounts = accountRepository.findAll();
         return accounts;
