@@ -22,20 +22,21 @@ public class FollowController {
         followService.follow(accountId1,accountId2);
     }
     //post 는 생성 put 은 수정을 많이 한다.
-//    @PutMapping("/follow")
-//    public void confirm(AccountDto) {
-//         // make confirm function
-//
-//        String myAccountId = followDto.getMyAccountId();
-//        String followAccountId = followDto.getFollowAccountId();
-//
-//        followService.accept(myAccountId, followAccountId);
-//    }
-//    @DeleteMapping("/follow")
-//    public void refuse() {
-//
-//        followService.refuse(myAccountId, followAccountId);
-//
-//    }
+    @PutMapping("/follow")
+    public void confirm(@RequestParam String accountId1, @RequestParam String accountId2) {
+         // make confirm function
+
+        followService.accept(accountId1, accountId2);
+    }
+
+    @DeleteMapping("/follow")
+    public void refuse(@RequestParam String accountId1, @RequestParam String accountId2) {
+
+        followService.refuse(accountId1, accountId2);
+
+    }
+
+
+
 
 }
