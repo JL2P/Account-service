@@ -11,7 +11,7 @@ import org.springframework.beans.BeanUtils;
 @Getter
 public class FollowDto {
     private String myAccountId;
-    private String myOpenAt;
+
     private String followAccountId;
-    private String followOpenAt;
+
 }

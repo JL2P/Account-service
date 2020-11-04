@@ -9,7 +9,6 @@ import com.account.api.repository.FollowerRepository;
 import com.account.api.repository.FollowingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +44,6 @@ public class FollowServiceImpl implements FollowService {
         if (account2.getOpenAt() != null && account2.getOpenAt().equals("Y")) {
             following.setConfirm("Y");
         }
-
         followerRepository.save(follower);
         followingRepository.save(following);
 
@@ -65,7 +63,6 @@ public class FollowServiceImpl implements FollowService {
         //orElseThrow() => 객체가 있으면 객체반환 없으면 익셉션(예외처리) 실행.
         Follower findFollower = followerRepository.findByAccountAndFollower(account, follower);
         Following findFollowing = followingRepository.findByAccountAndFollowing(findFollower.getFollower(), findFollower.getAccount());
-
         findFollower.setConfirm("Y");
         findFollowing.setConfirm("Y");
 
