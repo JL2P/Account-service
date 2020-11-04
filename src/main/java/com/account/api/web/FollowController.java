@@ -17,9 +17,10 @@ public class FollowController {
     private final FollowService followService;
 
     @PostMapping("/follow")
-    public void follow(@RequestParam String accountId1, @RequestParam String accountId2){
+    public void follow(@RequestBody FollowDto followDto){
         // make follow function
-        followService.follow(accountId1,accountId2);
+
+        followService.follow(followDto.getMyAccountId(),followDto.getFollowAccountId());
     }
     //post 는 생성 put 은 수정을 많이 한다.
     @PutMapping("/follow")
