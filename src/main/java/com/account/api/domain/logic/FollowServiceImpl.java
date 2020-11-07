@@ -4,6 +4,7 @@ import com.account.api.domain.Account;
 import com.account.api.domain.Follower;
 import com.account.api.domain.Following;
 import com.account.api.domain.service.FollowService;
+import com.account.api.exception.FollowCheckException;
 import com.account.api.repository.AccountRepository;
 import com.account.api.repository.FollowerRepository;
 import com.account.api.repository.FollowingRepository;
@@ -21,31 +22,47 @@ public class FollowServiceImpl implements FollowService {
     private final AccountRepository accountRepository;
 
     @Override
-    public void follow(String accountId1, String accountId2) {
+    public boolean followCheck(String accountId1, String accountId2) throws FollowCheckException {
         Account account1 = accountRepository.findById(accountId1).orElseThrow();
         Account account2 = accountRepository.findById(accountId2).orElseThrow();
 
-        //여기다가 실제 팔로우 되는 기능을 구현한다.
-        Follower follower = Follower.builder()
-                .account(account2)
-                .follower(account1)
-                .confirm("N")
-                .build();
+        System.out.println(accountId1+" "+accountId2);
+        if (followerRepository.findByAccountAndFollower(account1, account2) != null)
+            return true;
 
-        Following following = Following.builder()
-                .account(account1)
-                .following(account2)
-                .confirm("N").build();
+        return false;
+    }
 
-        // 공개계정일경우 자동으로 승인처리
-        if (account1.getOpenAt() != null && account1.getOpenAt().equals("Y")) {
-            follower.setConfirm("Y");
-        }
-        if (account2.getOpenAt() != null && account2.getOpenAt().equals("Y")) {
-            following.setConfirm("Y");
-        }
-        followerRepository.save(follower);
-        followingRepository.save(following);
+
+    @Override
+    public void follow(String accountId1, String accountId2) {
+
+        Account account1 = accountRepository.findById(accountId1).orElseThrow();
+        Account account2 = accountRepository.findById(accountId2).orElseThrow();
+
+
+
+            //여기다가 실제 팔로우 되는 기능을 구현한다.
+            Follower follower = Follower.builder()
+                    .account(account2)
+                    .follower(account1)
+                    .confirm("N")
+                    .build();
+
+            Following following = Following.builder()
+                    .account(account1)
+                    .following(account2)
+                    .confirm("N").build();
+
+            // 공개계정일경우 자동으로 승인처리
+            if (account1.getOpenAt() != null && account1.getOpenAt().equals("Y")) {
+                follower.setConfirm("Y");
+            }
+            if (account2.getOpenAt() != null && account2.getOpenAt().equals("Y")) {
+                following.setConfirm("Y");
+            }
+            followerRepository.save(follower);
+            followingRepository.save(following);
 
     }
 
