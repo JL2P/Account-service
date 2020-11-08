@@ -17,9 +17,6 @@ public class AccountAddDto {
     private String imgUrl;
     private String name;
     private String birth;
-    private String gender;
-    private String introduce;
-    private String loginType;
     private String openAt;
 
     public Account toEntity(){
