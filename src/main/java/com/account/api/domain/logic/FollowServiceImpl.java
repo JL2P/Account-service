@@ -77,6 +77,7 @@ public class FollowServiceImpl implements FollowService {
 
         Account account = accountRepository.findById(accountId).orElseThrow();
         Account follower = accountRepository.findById(followerId).orElseThrow();
+
         //orElseThrow() => 객체가 있으면 객체반환 없으면 익셉션(예외처리) 실행.
         Follower findFollower = followerRepository.findByAccountAndFollower(account, follower);
         Following findFollowing = followingRepository.findByAccountAndFollowing(findFollower.getFollower(), findFollower.getAccount());
@@ -118,6 +119,14 @@ public class FollowServiceImpl implements FollowService {
 
     }
 
+    // 내가 팔로잉 하는 사람 수 조회
+    public int getNumberOfMyFollowings (String accountId) {
+        List<Following> followingList = getFollowings(accountId);
+        int total_followings = followingList.size();
+
+        return total_followings;
+    }
+
 
     //나의 팔로워 리스트 전체 조회
     public List<Follower> getFollowers(String accountId) {
@@ -133,5 +142,12 @@ public class FollowServiceImpl implements FollowService {
             }
         }
         return findFollowers;
+    }
+
+    // 나를 팔로워 하는 사람 수 조회
+    public int getNumberOfMyFollowers (String accountId) {
+        List<Follower> followerList = getFollowers(accountId);
+        int total_followers = followerList.size();
+        return total_followers;
     }
 }
