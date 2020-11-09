@@ -42,8 +42,8 @@ public class AccountController {
         //토큰 취득
         String token = jwtTokenProvider.resolveToken(request);
         //토큰을 Decode하여 AccountId정보 취득
-        String accountId = jwtTokenProvider.getAccountId(token);
-        Account account = accountService.getAccount(accountId);
+        String email = jwtTokenProvider.getAccountId(token);
+        Account account = accountService.findByEmailAccount(email);
         return new AccountDto(account);
     }
 

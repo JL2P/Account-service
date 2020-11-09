@@ -7,7 +7,7 @@ import java.util.List;
 public interface AccountService {
     // 임시로 사용할 회원정보 추가하는 기능 ----------------
     public void addAccount(Account account);
-    public Account testLogin(String email, String password);
+    public Account findByEmailAccount(String email);
     //----------------------------------------------------
 
     //Account Service의 기능을 정의
