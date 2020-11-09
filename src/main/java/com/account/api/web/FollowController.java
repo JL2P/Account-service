@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 public class FollowController {
 
     private final FollowService followService;
-
+    //팔로우 체크
     @PostMapping("/isfollow")
     public boolean followCheck(@RequestBody FollowDto followDto)throws FollowCheckException {
         return followService.followCheck(followDto.getMyAccountId(), followDto.getFollowAccountId());
@@ -46,11 +46,28 @@ public class FollowController {
 
     }
 
+    @GetMapping("/followerlist")
+    public void getFollowers(@RequestBody FollowDto followDto) {
 
-    @GetMapping("/followers")
+        followService.getFollowers(followDto.getMyAccountId());
+    }
+
+    @GetMapping("/followinglist")
     public void getFollowings(@RequestBody FollowDto followDto) {
 
         followService.getFollowings(followDto.getMyAccountId());
+    }
+    //내가 팔로우 하는 사람(팔로잉)의 수 조회
+    @GetMapping("/followings")
+    public void getNumberOfMyFollowings(@RequestBody FollowDto followDto) {
+
+        followService.getNumberOfMyFollowings(followDto.getMyAccountId());
+    }
+    //나를 팔로우 하는 사람(팔로)의 수 조회
+    @GetMapping("/followers")
+    public void getNumberOfMyFollowers(@RequestBody FollowDto followDto) {
+
+        followService.getNumberOfMyFollowers(followDto.getMyAccountId());
     }
 
     @ExceptionHandler(RuntimeException.class)
@@ -60,5 +77,6 @@ public class FollowController {
         error.setMessage("test");
         return error;
     }
+
 
 }

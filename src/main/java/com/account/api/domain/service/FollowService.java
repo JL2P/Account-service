@@ -1,6 +1,7 @@
 package com.account.api.domain.service;
 
 import com.account.api.domain.Account;
+import com.account.api.domain.Follower;
 import com.account.api.domain.Following;
 import com.account.api.exception.FollowCheckException;
 
@@ -15,4 +16,7 @@ public interface FollowService {
     public void accept(String myAccountId1, String myAccountId2);
     public void refuse(String myAccountId1, String myAccountId2);
     public List<Following> getFollowings(String myAccountId);
+    public List<Follower> getFollowers(String myAccountId);
+    public int getNumberOfMyFollowings(String myAccountId);
+    public int getNumberOfMyFollowers (String myAccountId);
 }
