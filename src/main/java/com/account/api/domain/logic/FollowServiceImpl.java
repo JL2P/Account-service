@@ -29,7 +29,7 @@ public class FollowServiceImpl implements FollowService {
         Account account2 = accountRepository.findById(accountId2).orElseThrow();
 
         System.out.println(accountId1+" "+accountId2);
-        if (followerRepository.findByAccountAndFollower(account1, account2) != null)
+        if (followerRepository.findByAccountAndFollower(account2, account1).isPresent())
             return true;
 
         return false;
