@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class AccountController {
 
     @ApiOperation(value = "내 정보 조회", notes = "JWT에서 유저정보를 취득하여 유저정보를 불러온다")
     @GetMapping("/info")
-    public AccountDto getMyInfo(HttpServletRequest request){
+    public AccountDto getMyInfo(HttpServletRequest request) throws NoSuchElementException {
         //토큰 취득
         String token = jwtTokenProvider.resolveToken(request);
         //토큰을 Decode하여 AccountId정보 취득
@@ -72,5 +73,13 @@ public class AccountController {
     @DeleteMapping("/signout/{accountId}")
     public void deleteAccount(@PathVariable String accountId) {
         accountService.deleteAccount(accountId);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public @ResponseBody
+    ErrorMessage runTimeError(RuntimeException e) throws NoSuchElementException {
+        ErrorMessage error = new ErrorMessage();
+        error.setMessage(e.getMessage());
+        return error;
     }
 }

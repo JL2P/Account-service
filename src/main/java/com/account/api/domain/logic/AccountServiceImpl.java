@@ -6,6 +6,8 @@ import com.account.api.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -24,8 +26,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account findByEmailAccount(String email) {
-        return accountRepository.findByEmail(email);
+    public Account findByEmailAccount(String email) throws NoSuchElementException{
+        return accountRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("account not found"));
     }
 
     @Override
