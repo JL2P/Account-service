@@ -1,5 +1,6 @@
 package com.account.api.web;
 
+import com.account.api.config.JwtTokenProvider;
 import com.account.api.domain.service.AccountService;
 import com.account.api.domain.service.FollowService;
 import com.account.api.exception.FollowCheckException;
@@ -9,6 +10,7 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.NoSuchElementException;
 
 @Api(tags = {"1. Follower"})
@@ -18,14 +20,20 @@ import java.util.NoSuchElementException;
 public class FollowController {
 
     private final FollowService followService;
+    private final JwtTokenProvider jwtTokenProvider;
     //팔로우 체크
-    @PostMapping("/isfollow")
-    public boolean followCheck(@RequestBody FollowDto followDto)throws FollowCheckException {
-        return followService.followCheck(followDto.getMyAccountId(), followDto.getFollowAccountId());
+    @PostMapping("/isfollow/{followId}")
+    public boolean followCheck(@PathVariable String followId, HttpServletRequest request)throws FollowCheckException {
+        //토큰 취득
+        String token = jwtTokenProvider.resolveToken(request);
+        //토큰을 Decode하여 AccountId정보 취득
+        String accountId = jwtTokenProvider.getAccountId(token);
+
+        return followService.followCheck(accountId, followId);
     }
 
     @PostMapping("/follow")
-    public void follow(@RequestBody FollowDto followDto) {
+    public void follow(@RequestBody FollowDto followDto) throws FollowCheckException{
         // make follow function
 
     followService.follow(followDto.getMyAccountId(), followDto.getFollowAccountId());
@@ -72,9 +80,9 @@ public class FollowController {
 
     @ExceptionHandler(RuntimeException.class)
     public @ResponseBody
-    ErrorMessage runTimeError(RuntimeException e) throws FollowCheckException {
+    ErrorMessage runTimeError(RuntimeException e) {
         ErrorMessage error = new ErrorMessage();
-        error.setMessage("test");
+        error.setMessage(error.getMessage());
         return error;
     }
 

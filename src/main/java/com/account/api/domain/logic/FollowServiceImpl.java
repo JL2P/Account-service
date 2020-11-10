@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -35,13 +37,15 @@ public class FollowServiceImpl implements FollowService {
 
 
     @Override
-    public void follow(String accountId1, String accountId2) {
+    public void follow(String accountId1, String accountId2) throws FollowCheckException {
 
         Account account1 = accountRepository.findById(accountId1).orElseThrow();
         Account account2 = accountRepository.findById(accountId2).orElseThrow();
 
-
-
+        if (followerRepository.findByAccountAndFollower(account2, account1).isPresent()) {
+            throw new FollowCheckException("follow is exist");
+        }
+        else {
             //여기다가 실제 팔로우 되는 기능을 구현한다.
             Follower follower = Follower.builder()
                     .account(account2)
@@ -63,7 +67,7 @@ public class FollowServiceImpl implements FollowService {
             }
             followerRepository.save(follower);
             followingRepository.save(following);
-
+        }
     }
 
 
@@ -79,8 +83,8 @@ public class FollowServiceImpl implements FollowService {
         Account follower = accountRepository.findById(followerId).orElseThrow();
 
         //orElseThrow() => 객체가 있으면 객체반환 없으면 익셉션(예외처리) 실행.
-        Follower findFollower = followerRepository.findByAccountAndFollower(account, follower);
-        Following findFollowing = followingRepository.findByAccountAndFollowing(findFollower.getFollower(), findFollower.getAccount());
+        Follower findFollower = followerRepository.findByAccountAndFollower(account, follower).orElseThrow(()-> new NoSuchElementException());
+        Following findFollowing = followingRepository.findByAccountAndFollowing(findFollower.getFollower(), findFollower.getAccount()).orElseThrow(()->new NoSuchElementException());
         findFollower.setConfirm("Y");
         findFollowing.setConfirm("Y");
 
@@ -94,8 +98,8 @@ public class FollowServiceImpl implements FollowService {
         Account account = accountRepository.findById(accountId).orElseThrow();
         Account follower = accountRepository.findById(followerId).orElseThrow();
 
-        Follower findFollower = followerRepository.findByAccountAndFollower(account, follower);
-        Following findFollowing = followingRepository.findByAccountAndFollowing(findFollower.getFollower(), findFollower.getAccount());
+        Follower findFollower = followerRepository.findByAccountAndFollower(account, follower).orElseThrow(()-> new NoSuchElementException());
+        Following findFollowing = followingRepository.findByAccountAndFollowing(findFollower.getFollower(), findFollower.getAccount()).orElseThrow(()-> new NoSuchElementException());
 
         followerRepository.delete(findFollower);
         followingRepository.delete(findFollowing);
@@ -110,7 +114,7 @@ public class FollowServiceImpl implements FollowService {
         List<Following> findFollowings = new ArrayList<>();
 
         for (int i = 0; i < allFollowings.size(); i++) {
-            Following following = followingRepository.findByAccountAndFollowing(account, allFollowings.get(i).getFollowing());
+            Following following = followingRepository.findByAccountAndFollowing(account, allFollowings.get(i).getFollowing()).orElseThrow(()-> new NoSuchElementException());
             if (following.getConfirm().equals("Y")) {
                 findFollowings.add(following);
             }
@@ -136,7 +140,7 @@ public class FollowServiceImpl implements FollowService {
         List<Follower> findFollowers = new ArrayList<>();
 
         for (int i = 0; i < allFollowers.size(); i++) {
-            Follower follower = followerRepository.findByAccountAndFollower(account, allFollowers.get(i).getFollower());
+            Follower follower = followerRepository.findByAccountAndFollower(account, allFollowers.get(i).getFollower()).orElseThrow(()-> new NoSuchElementException());
             if (follower.getConfirm().equals("Y")) {
                 findFollowers.add(follower);
             }
@@ -150,4 +154,6 @@ public class FollowServiceImpl implements FollowService {
         int total_followers = followerList.size();
         return total_followers;
     }
+
+
 }
