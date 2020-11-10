@@ -20,8 +20,13 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
     private String secretKey;
 
     // Jwt 토큰에서 회원 구별 정보 추출
-    public String getAccountId(String token) {
+    public String getAccountEmail(String token) {
         return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token).getBody().get("user_name",String.class);
+    }
+
+    // Jwt 토큰에서 회원 구별 정보 추출
+    public String getAccountId(String token) {
+        return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token).getBody().get("accountId",String.class);
     }
 
     public String getAccoutRole(String token){
