@@ -6,6 +6,7 @@ import com.account.api.domain.service.FollowService;
 import com.account.api.exception.FollowCheckException;
 import com.account.api.web.dto.AccountDto;
 import com.account.api.web.dto.FollowDto;
+import com.account.api.web.dto.FollowStateDto;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +24,13 @@ public class FollowController {
     private final JwtTokenProvider jwtTokenProvider;
     //팔로우 체크
     @PostMapping("/isfollow/{followId}")
-    public boolean followCheck(@PathVariable String followId, HttpServletRequest request)throws FollowCheckException {
+    public FollowStateDto followCheck(@PathVariable String followId, HttpServletRequest request)throws FollowCheckException {
         //토큰 취득
         String token = jwtTokenProvider.resolveToken(request);
         //토큰을 Decode하여 AccountId정보 취득
         String accountId = jwtTokenProvider.getAccountId(token);
 
-        return followService.followCheck(accountId, followId);
+        return new FollowStateDto(followService.followCheck(accountId, followId));
     }
 
     @PostMapping("/follow")
