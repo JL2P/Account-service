@@ -17,6 +17,7 @@ import org.springframework.util.ObjectUtils;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -72,8 +73,8 @@ public class FollowerTests {
 
         //when
         //값이 디비에서 잘넘어오는지 테스트
-        Following findFollowing = followingRepository.findByAccountAndFollowing(followerId, accountId);
-        Follower findFollower = followerRepository.findByAccountAndFollower(accountId, followerId);
+        Following findFollowing = followingRepository.findByAccountAndFollowing(followerId, accountId).orElseThrow(()-> new NoSuchElementException());
+        Follower findFollower = followerRepository.findByAccountAndFollower(accountId, followerId).orElseThrow(()-> new NoSuchElementException());
 
         //then
         assertThat(findFollowing.getAccount()).isEqualTo(followerId);
@@ -83,15 +84,16 @@ public class FollowerTests {
     @Test
     public void 팔로우요청_승인을_잘처리하는지_test() {
 
-        String account_id1 = "TB";
-        String account_id2 = "TA";
+        String account_id1 = "TB1";
+        String account_id2 = "TA1";
 
         Account accountId = accountRepository.findById(account_id1).orElseThrow();
         Account followerId = accountRepository.findById(account_id2).orElseThrow();
 
         //when
-        Follower findFollower = followerRepository.findByAccountAndFollower(accountId, followerId);
-        Following findFollowing = followingRepository.findByAccountAndFollowing(findFollower.getFollower(), findFollower.getAccount());
+        Follower findFollower = followerRepository.findByAccountAndFollower(accountId, followerId).orElseThrow(()-> new NoSuchElementException());
+
+        Following findFollowing = followingRepository.findByAccountAndFollowing(findFollower.getFollower(), findFollower.getAccount()).orElseThrow(()-> new NoSuchElementException());
 
 
         findFollower.setConfirm("Y");
