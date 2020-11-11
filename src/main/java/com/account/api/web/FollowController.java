@@ -1,10 +1,9 @@
 package com.account.api.web;
 
 import com.account.api.config.JwtTokenProvider;
-import com.account.api.domain.service.AccountService;
+import com.account.api.domain.Follower;
 import com.account.api.domain.service.FollowService;
 import com.account.api.exception.FollowCheckException;
-import com.account.api.web.dto.AccountDto;
 import com.account.api.web.dto.FollowDto;
 import com.account.api.web.dto.FollowStateDto;
 import io.swagger.annotations.Api;
@@ -12,7 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.NoSuchElementException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = {"1. Follower"})
 @RequiredArgsConstructor
@@ -37,18 +37,34 @@ public class FollowController {
     public void follow(@RequestBody FollowDto followDto) throws FollowCheckException{
         // make follow function
 
+
     followService.follow(followDto.getMyAccountId(), followDto.getFollowAccountId());
 
     }
+
+    //아직 나에게 confirm 받지 않은 나의 팔로워 리스트 조회
+    @GetMapping("")
+    public List<FollowDto> getAllFollowers(HttpServletRequest request) {
+
+        //토큰 취득
+        String token = jwtTokenProvider.resolveToken(request);
+        //토큰을 Decode하여 AccountId정보 취득
+        String accountId = jwtTokenProvider.getAccountId(token);
+        List<Follower> followers = followService.getAllFollowers(accountId);
+        return followers.stream().map(todo -> new FollowDto()).collect(Collectors.toList());
+    }
+
+
+
     //post 는 생성 put 은 수정을 많이 한다.
-    @PutMapping("/follow")
+    @PutMapping("/confirm/{followId}")
     public void confirm(@RequestBody FollowDto followDto) {
          // make confirm function
 
         followService.accept(followDto.getMyAccountId(), followDto.getFollowAccountId());
     }
 
-    @DeleteMapping("/follow")
+    @DeleteMapping("/refuse/{followId}")
     public void refuse(@RequestBody FollowDto followDto) {
 
         followService.refuse(followDto.getMyAccountId(), followDto.getFollowAccountId());

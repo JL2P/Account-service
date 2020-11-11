@@ -24,6 +24,21 @@ public class FollowServiceImpl implements FollowService {
     private final AccountRepository accountRepository;
 
     @Override
+    public List<Follower> getAllFollowers(String accountId) throws NoSuchElementException {
+        Account account = accountRepository.findById(accountId).orElseThrow();
+        List<Follower> allFollowers = followerRepository.findByAccount(account);
+        List<Follower> targetFollowers = new ArrayList<>();
+
+        for(int i=0; i<allFollowers.size(); i++) {
+            if(allFollowers.get(i).getConfirm().equals("N")) {
+                targetFollowers.add(allFollowers.get(i));
+            }
+        }
+        return targetFollowers;
+    }
+
+
+    @Override
     public boolean followCheck(String accountId1, String accountId2) throws FollowCheckException {
         Account account1 = accountRepository.findById(accountId1).orElseThrow();
         Account account2 = accountRepository.findById(accountId2).orElseThrow();
