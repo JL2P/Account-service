@@ -5,9 +5,11 @@ import com.account.api.domain.Follower;
 import com.account.api.domain.Following;
 import com.account.api.domain.service.FollowService;
 import com.account.api.exception.FollowCheckException;
+import com.account.api.exception.FollowingCheckException;
 import com.account.api.repository.AccountRepository;
 import com.account.api.repository.FollowerRepository;
 import com.account.api.repository.FollowingRepository;
+import com.account.api.web.dto.AccountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -23,8 +25,9 @@ public class FollowServiceImpl implements FollowService {
     private final FollowingRepository followingRepository;
     private final AccountRepository accountRepository;
 
+
     @Override
-    public List<Follower> getAllFollowers(String accountId) throws NoSuchElementException {
+    public List<Account> getAllFollowers(String accountId) throws NoSuchElementException {
         Account account = accountRepository.findById(accountId).orElseThrow();
         List<Follower> allFollowers = followerRepository.findByAccount(account);
         List<Follower> targetFollowers = new ArrayList<>();
@@ -34,7 +37,11 @@ public class FollowServiceImpl implements FollowService {
                 targetFollowers.add(allFollowers.get(i));
             }
         }
-        return targetFollowers;
+        List<Account> targetAccounts = new ArrayList<>();
+        for(int i=0; i<targetFollowers.size(); i++) {
+            targetAccounts.add(targetFollowers.get(i).getFollower());
+        }
+        return targetAccounts;
     }
 
 
@@ -49,6 +56,25 @@ public class FollowServiceImpl implements FollowService {
 
         return false;
     }
+
+    @Override
+    public boolean followingCheck(String accountId1, String accountId2) throws FollowingCheckException {
+        Account account1 = accountRepository.findById(accountId1).orElseThrow();
+        Account account2 = accountRepository.findById(accountId2).orElseThrow();
+
+        System.out.println(accountId1+" "+accountId2);
+
+        if(followingRepository.findByAccountAndFollowing(account1, account2).isPresent()) {
+            Following following = followingRepository.findByAccountAndFollowing(account1, account2).orElseThrow();
+            if(following.getConfirm().equals("Y")){
+                return true;
+            }
+            else return false;
+        }
+        return false;
+    }
+
+
 
 
     @Override
@@ -122,6 +148,7 @@ public class FollowServiceImpl implements FollowService {
     }
 
 //    나의 팔로잉 리스트 전체 조회
+    @Override
     public List<Following> getFollowings(String accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow();
 
@@ -139,6 +166,7 @@ public class FollowServiceImpl implements FollowService {
     }
 
     // 내가 팔로잉 하는 사람 수 조회
+    @Override
     public int getNumberOfMyFollowings (String accountId) {
         List<Following> followingList = getFollowings(accountId);
         int total_followings = followingList.size();
@@ -148,7 +176,8 @@ public class FollowServiceImpl implements FollowService {
 
 
     //나의 팔로워 리스트 전체 조회
-    public List<Follower> getFollowers(String accountId) {
+    @Override
+    public List<Account> getMyFollowers(String accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow();
 
         List<Follower> allFollowers = followerRepository.findByAccount(account);
@@ -158,14 +187,20 @@ public class FollowServiceImpl implements FollowService {
             Follower follower = followerRepository.findByAccountAndFollower(account, allFollowers.get(i).getFollower()).orElseThrow(()-> new NoSuchElementException());
             if (follower.getConfirm().equals("Y")) {
                 findFollowers.add(follower);
+                }
             }
+        List<Account> myfollowerAccount = new ArrayList<>();
+
+        for(int i=0; i<findFollowers.size(); i++) {
+            myfollowerAccount.add(findFollowers.get(i).getFollower());
         }
-        return findFollowers;
+        return myfollowerAccount;
     }
 
     // 나를 팔로워 하는 사람 수 조회
+    @Override
     public int getNumberOfMyFollowers (String accountId) {
-        List<Follower> followerList = getFollowers(accountId);
+        List<Account> followerList = getMyFollowers(accountId);
         int total_followers = followerList.size();
         return total_followers;
     }
