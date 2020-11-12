@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Api(tags = {"1. Follower"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/accounts") //컨트롤러 기본 URL
+@RequestMapping("/api/accounts/follow/") //컨트롤러 기본 URL
 public class FollowController {
 
     private final FollowService followService;
@@ -33,7 +33,7 @@ public class FollowController {
         return new FollowStateDto(followService.followCheck(accountId, followId));
     }
 
-    @PostMapping("/follow")
+    @PostMapping("")
     public void follow(@RequestBody FollowDto followDto) throws FollowCheckException{
         // make follow function
 
