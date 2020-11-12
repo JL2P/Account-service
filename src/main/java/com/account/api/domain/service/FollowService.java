@@ -24,6 +24,8 @@ public interface FollowService {
     public void accept(String myAccountId1, String myAccountId2);
     public void refuse(String myAccountId1, String myAccountId2);
     public List<Following> getFollowings(String myAccountId) throws NoSuchElementException;
+    //승훈 추가
+    public List<Following> getMyFollowings(String accountId) throws NoSuchElementException;
     public List<Account> getMyFollowers(String myAccountId) throws NoSuchElementException;
     public int getNumberOfMyFollowings(String myAccountId) throws NoSuchElementException;
     public int getNumberOfMyFollowers (String myAccountId) throws NoSuchElementException;
