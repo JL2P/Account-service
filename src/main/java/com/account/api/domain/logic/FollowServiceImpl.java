@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -164,6 +165,17 @@ public class FollowServiceImpl implements FollowService {
         return findFollowings;
 
     }
+
+    // 승훈 추가
+    // 나의 팔로잉 리스트 전체 조회
+    @Override
+    public List<Following> getMyFollowings(String accountId) throws NoSuchElementException{
+        //회원 객체 가져옴
+        Account account = accountRepository.findById(accountId).orElseThrow();
+        //내가 팔로우한 사람들(팔로잉) 리스트 중 승인된 사람들만 가져옴
+        return followingRepository.findByAccountAndConfirm(account,"Y");
+    }
+
 
     // 내가 팔로잉 하는 사람 수 조회
     @Override

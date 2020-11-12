@@ -13,5 +13,6 @@ public interface FollowingRepository extends JpaRepository<Following,Long> {
     Optional<Following> findByAccountAndFollowing(Account account, Account following);
     List<Following> findByAccount (Account account);
 
+    List<Following> findByAccountAndConfirm(Account account, String confirm);
 
 }

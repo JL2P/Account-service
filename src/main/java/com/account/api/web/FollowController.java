@@ -3,6 +3,8 @@ package com.account.api.web;
 import com.account.api.config.JwtTokenProvider;
 import com.account.api.domain.Account;
 import com.account.api.domain.Follower;
+import com.account.api.domain.Following;
+import com.account.api.domain.service.AccountService;
 import com.account.api.domain.service.FollowService;
 import com.account.api.exception.FollowCheckException;
 import com.account.api.exception.FollowingCheckException;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class FollowController {
 
     private final FollowService followService;
+    private final AccountService accountService;
     private final JwtTokenProvider jwtTokenProvider;
     //팔로우 체크
     @PostMapping("/isfollow/{followId}")
@@ -101,6 +104,23 @@ public class FollowController {
 
         followService.getFollowings(followDto.getMyAccountId());
     }
+
+    //승훈 생성
+    //내가 팔로우를 신청한 사람들중에 나를 승인한 사람들의 데이터를 보내준다.
+    @GetMapping("/myFollowingList")
+    public List<AccountDto> getMyFollowings(HttpServletRequest request) {
+        //토큰에서 내 정보 추출
+        String token = jwtTokenProvider.resolveToken(request);
+        String accountId = jwtTokenProvider.getAccountId(token);
+        //내가 팔로우를 신청한 사람들 중 나를 승인한 사람들 (Following테이블에서 가져오기)
+        List<Following> followings = followService.getMyFollowings(accountId);
+        //AccountDto로 변환하여 리턴
+        return followings.stream().map(following ->
+                new AccountDto(following.getFollowing())).collect(Collectors.toList());
+    }
+
+
+
     //내가 팔로우 하는 사람(팔로잉)의 수 조회
     @GetMapping("/followings")
     public void getNumberOfMyFollowings(@RequestBody FollowDto followDto) {
