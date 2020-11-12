@@ -1,9 +1,12 @@
 package com.account.api.web;
 
 import com.account.api.config.JwtTokenProvider;
+import com.account.api.domain.Account;
 import com.account.api.domain.Follower;
 import com.account.api.domain.service.FollowService;
 import com.account.api.exception.FollowCheckException;
+import com.account.api.exception.FollowingCheckException;
+import com.account.api.web.dto.AccountDto;
 import com.account.api.web.dto.FollowDto;
 import com.account.api.web.dto.FollowStateDto;
 import io.swagger.annotations.Api;
@@ -33,6 +36,16 @@ public class FollowController {
         return new FollowStateDto(followService.followCheck(accountId, followId));
     }
 
+    @PostMapping("/isfollowing/{followId}")
+    public FollowStateDto followingCheck(HttpServletRequest request, @PathVariable String followId)throws FollowingCheckException {
+        //토큰 취득
+        String token = jwtTokenProvider.resolveToken(request);
+        //토큰을 Decode하여 AccountId정보 취득
+        String accountId = jwtTokenProvider.getAccountId(token);
+
+        return new FollowStateDto(followService.followingCheck(accountId, followId));
+    }
+
     @PostMapping("")
     public void follow(@RequestBody FollowDto followDto) throws FollowCheckException{
         // make follow function
@@ -44,14 +57,14 @@ public class FollowController {
 
     //아직 나에게 confirm 받지 않은 나의 팔로워 리스트 조회
     @GetMapping("")
-    public List<FollowDto> getAllFollowers(HttpServletRequest request) {
+    public List<AccountDto> getAllFollowers(HttpServletRequest request) {
 
         //토큰 취득
         String token = jwtTokenProvider.resolveToken(request);
         //토큰을 Decode하여 AccountId정보 취득
         String accountId = jwtTokenProvider.getAccountId(token);
-        List<Follower> followers = followService.getAllFollowers(accountId);
-        return followers.stream().map(todo -> new FollowDto()).collect(Collectors.toList());
+        List<Account> followers = followService.getAllFollowers(accountId);
+        return followers.stream().map(follow -> new AccountDto(follow)).collect(Collectors.toList());
     }
 
 
@@ -71,13 +84,19 @@ public class FollowController {
 
     }
 
-    @GetMapping("/followerlist")
-    public void getFollowers(@RequestBody FollowDto followDto) {
+    @GetMapping("/myFollowerList")
+    public List<AccountDto> getMyFollowers(HttpServletRequest request) {
 
-        followService.getFollowers(followDto.getMyAccountId());
+        //토큰 취득
+        String token = jwtTokenProvider.resolveToken(request);
+        //토큰을 Decode하여 AccountId정보 취득
+        String accountId = jwtTokenProvider.getAccountId(token);
+        List<Account> followers = followService.getMyFollowers(accountId);
+        return followers.stream().map(follow -> new AccountDto(follow)).collect(Collectors.toList());
     }
 
-    @GetMapping("/followinglist")
+
+    @GetMapping("/followingList")
     public void getFollowings(@RequestBody FollowDto followDto) {
 
         followService.getFollowings(followDto.getMyAccountId());
