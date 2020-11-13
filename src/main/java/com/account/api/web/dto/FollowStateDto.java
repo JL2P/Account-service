@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 public class FollowStateDto {
     private boolean followState;
 
+
     public FollowStateDto(boolean state){
         this.followState= state;
     }

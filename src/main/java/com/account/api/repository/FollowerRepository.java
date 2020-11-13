@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface FollowerRepository  extends JpaRepository<Follower,Long> {
 
     Optional<Follower> findByAccountAndFollower(Account account, Account follower);
+    Optional<Follower> findByAccountAndFollowerAndConfirm(Account account, Account follower,String confirm);
     List<Follower> findByAccount(Account account);
 
 }

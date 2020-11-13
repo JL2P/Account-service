@@ -119,20 +119,26 @@ public class FollowController {
                 new AccountDto(following.getFollowing())).collect(Collectors.toList());
     }
 
+//    @GetMapping("/myFollowerCnt")
+//    public int getMyFollowerCnt (HttpServletRequest request) {
+//        List<AccountDto> myFollowerList = getMyFollowers(request);
+//        int cnt=0;
+//        for(int i=0; i<myFollowerList.size(); i++) cnt++;
+//
+//        return cnt;
+//    }
+
+//    @GetMapping("/myFollowingCnt")
+//    public int getMyFollowingCnt (HttpServletRequest request) {
+//        List<AccountDto> myFollowingList = getMyFollowings(request);
+//        int cnt=0;
+//        for(int i=0; i<myFollowingList.size(); i++) cnt++;
+//
+//        return cnt;
+//    }
 
 
-    //내가 팔로우 하는 사람(팔로잉)의 수 조회
-    @GetMapping("/followings")
-    public void getNumberOfMyFollowings(@RequestBody FollowDto followDto) {
 
-        followService.getNumberOfMyFollowings(followDto.getMyAccountId());
-    }
-    //나를 팔로우 하는 사람(팔로)의 수 조회
-    @GetMapping("/followers")
-    public void getNumberOfMyFollowers(@RequestBody FollowDto followDto) {
-
-        followService.getNumberOfMyFollowers(followDto.getMyAccountId());
-    }
 
     @ExceptionHandler(RuntimeException.class)
     public @ResponseBody
