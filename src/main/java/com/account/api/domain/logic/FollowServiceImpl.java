@@ -52,7 +52,7 @@ public class FollowServiceImpl implements FollowService {
         Account account2 = accountRepository.findById(accountId2).orElseThrow();
 
         System.out.println(accountId1+" "+accountId2);
-        if (followerRepository.findByAccountAndFollowerAndConfirm(account2, account1,"Y").isPresent())
+        if (followerRepository.findByAccountAndFollower(account2, account1).isPresent())
             return true;
 
         return false;
@@ -66,7 +66,7 @@ public class FollowServiceImpl implements FollowService {
         System.out.println(accountId1+" "+accountId2);
 
         if(followingRepository.findByAccountAndFollowingAndConfirm(account1, account2,"Y").isPresent()) {
-            Following following = followingRepository.findByAccountAndFollowingAndConfirm(account1, account2,"Y").orElseThrow();
+            Following following = followingRepository.findByAccountAndFollowing(account1, account2).orElseThrow();
             if(following.getConfirm().equals("Y")){
                 return true;
             }
