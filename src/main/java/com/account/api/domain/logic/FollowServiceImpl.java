@@ -65,7 +65,7 @@ public class FollowServiceImpl implements FollowService {
 
         System.out.println(accountId1+" "+accountId2);
 
-        if(followingRepository.findByAccountAndFollowingAndConfirm(account1, account2,"Y").isPresent()) {
+        if(followingRepository.findByAccountAndFollowing(account1, account2).isPresent()) {
             Following following = followingRepository.findByAccountAndFollowing(account1, account2).orElseThrow();
             if(following.getConfirm().equals("Y")){
                 return true;
