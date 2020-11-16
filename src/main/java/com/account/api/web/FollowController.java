@@ -137,7 +137,22 @@ public class FollowController {
 //        return cnt;
 //    }
 
+    // 승훈 추가
+    // 기존에 token에서 account정보를 가지고 오는 함수(getMyFollowers)를 url에서 가지고 오도록 변경된 함수
+    @GetMapping("{accountId}/followers")
+    public List<AccountDto> getFollowers(@PathVariable String accountId) {
+        List<Account> followers = followService.getMyFollowers(accountId);
+        return followers.stream().map(follow -> new AccountDto(follow)).collect(Collectors.toList());
+    }
 
+    // 기존에 token에서 account정보를 가지고 오는 함수(getMyFollowings)를 url에서 가지고 오도록 변경된 함수
+    @GetMapping("{accountId}/followings")
+    public List<AccountDto> getFollowings(@PathVariable String accountId) {
+        //내가 팔로우를 신청한 사람들 중 나를 승인한 사람들 (Following테이블에서 가져오기)
+        List<Following> followings = followService.getMyFollowings(accountId);
+        return followings.stream().map(following ->
+                new AccountDto(following.getFollowing())).collect(Collectors.toList());
+    }
 
 
     @ExceptionHandler(RuntimeException.class)
