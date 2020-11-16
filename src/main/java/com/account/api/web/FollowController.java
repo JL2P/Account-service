@@ -74,16 +74,23 @@ public class FollowController {
 
     //post 는 생성 put 은 수정을 많이 한다.
     @PutMapping("/confirm/{followId}")
-    public void confirm(@RequestBody FollowDto followDto) {
-         // make confirm function
+    public void confirm(@PathVariable String followId, HttpServletRequest request) {
+        //토큰 취득
+        String token = jwtTokenProvider.resolveToken(request);
+        //토큰을 Decode하여 AccountId정보 취득
+        String accountId = jwtTokenProvider.getAccountId(token);
 
-        followService.accept(followDto.getMyAccountId(), followDto.getFollowAccountId());
+        followService.accept(accountId, followId);
     }
 
     @DeleteMapping("/refuse/{followId}")
-    public void refuse(@RequestBody FollowDto followDto) {
+    public void refuse(@PathVariable String followId, HttpServletRequest request) {
+        //토큰 취득
+        String token = jwtTokenProvider.resolveToken(request);
+        //토큰을 Decode하여 AccountId정보 취득
+        String accountId = jwtTokenProvider.getAccountId(token);
 
-        followService.refuse(followDto.getMyAccountId(), followDto.getFollowAccountId());
+        followService.refuse(accountId, followId);
 
     }
 
