@@ -2,7 +2,6 @@ package com.account.api.web;
 
 import com.account.api.config.JwtTokenProvider;
 import com.account.api.domain.Account;
-import com.account.api.domain.Follower;
 import com.account.api.domain.Following;
 import com.account.api.domain.service.AccountService;
 import com.account.api.domain.service.FollowService;
@@ -40,7 +39,7 @@ public class FollowController {
     }
 
     @PostMapping("/isfollowing/{followId}")
-    public FollowStateDto followingCheck(HttpServletRequest request, @PathVariable String followId)throws FollowingCheckException {
+    public FollowStateDto followingCheck(@PathVariable String followId, HttpServletRequest request)throws FollowingCheckException {
         //토큰 취득
         String token = jwtTokenProvider.resolveToken(request);
         //토큰을 Decode하여 AccountId정보 취득
@@ -94,6 +93,16 @@ public class FollowController {
 
     }
 
+    @DeleteMapping("/delete/{followId}")
+    public void deleteMyfollowing(@PathVariable String followId, HttpServletRequest request) {
+        //토큰에서 내 정보 추출
+        String token = jwtTokenProvider.resolveToken(request);
+        String accountId = jwtTokenProvider.getAccountId(token);
+
+        followService.deleteMyfollowing(accountId, followId);
+
+    }
+
     @GetMapping("/myFollowerList")
     public List<AccountDto> getMyFollowers(HttpServletRequest request) {
 
@@ -125,6 +134,8 @@ public class FollowController {
         return followings.stream().map(following ->
                 new AccountDto(following.getFollowing())).collect(Collectors.toList());
     }
+    //
+
 
 //    @GetMapping("/myFollowerCnt")
 //    public int getMyFollowerCnt (HttpServletRequest request) {

@@ -20,13 +20,20 @@ public interface FollowService {
     public boolean followingCheck(String accountId1, String accountId2) throws FollowingCheckException;
     //팔로우 기능
     public void follow(String myAccountId1, String myAccountId2);
-
+    //팔로잉신청 수락 기능
     public void accept(String myAccountId1, String myAccountId2);
+    //팔로잉신청 거절 / 팔로워리스트에서 팔로워 삭제 기능 능
     public void refuse(String myAccountId1, String myAccountId2);
+    //팔로잉리스트에서 팔로잉 삭제 기
+    public void deleteMyfollowing(String accountId1, String accountId2);
     public List<Following> getFollowings(String myAccountId) throws NoSuchElementException;
     //승훈 추가
     public List<Following> getMyFollowings(String accountId) throws NoSuchElementException;
+    //
+    //팔로워리스트 조회기능
     public List<Account> getMyFollowers(String myAccountId) throws NoSuchElementException;
+    //
+
     public int getNumberOfMyFollowings(String myAccountId) throws NoSuchElementException;
     public int getNumberOfMyFollowers (String myAccountId) throws NoSuchElementException;
 }
