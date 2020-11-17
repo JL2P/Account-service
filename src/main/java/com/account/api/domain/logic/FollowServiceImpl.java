@@ -133,7 +133,7 @@ public class FollowServiceImpl implements FollowService {
         followingRepository.save(findFollowing);
     }
 
-    //팔로우 요청 거절
+    //팔로우 요청 거절  / 팔로워 리스트에서 팔로워 삭제
     public void refuse(String accountId, String followerId) {
 
         Account account = accountRepository.findById(accountId).orElseThrow();
@@ -147,7 +147,23 @@ public class FollowServiceImpl implements FollowService {
 
     }
 
-//    나의 팔로잉 리스트 전체 조회
+    // 팔로잉 리스트에서 팔로잉 삭제
+    @Override
+    public void deleteMyfollowing(String accountId, String followingId) {
+        Account account = accountRepository.findById(accountId).orElseThrow();
+        Account following = accountRepository.findById(followingId).orElseThrow();
+
+
+        Following findFollowing = followingRepository.findByAccountAndFollowing(account, following).orElseThrow(()-> new NoSuchElementException());
+        Follower findFollower = followerRepository.findByAccountAndFollower(following, account).orElseThrow(()-> new NoSuchElementException());
+
+        followingRepository.delete(findFollowing); // accountId = 나, followingId = 상대방
+        followerRepository.delete(findFollower); // accountId = 상대방, followerId = 나
+
+    }
+
+
+    // 나의 팔로잉 리스트 전체 조회
     @Override
     public List<Following> getFollowings(String accountId) {
         Account account = accountRepository.findById(accountId).orElseThrow();
