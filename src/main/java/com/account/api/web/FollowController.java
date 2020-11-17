@@ -39,7 +39,7 @@ public class FollowController {
     }
 
     @PostMapping("/isfollowing/{followId}")
-    public FollowStateDto followingCheck(HttpServletRequest request, @PathVariable String followId)throws FollowingCheckException {
+    public FollowStateDto followingCheck(@PathVariable String followId, HttpServletRequest request)throws FollowingCheckException {
         //토큰 취득
         String token = jwtTokenProvider.resolveToken(request);
         //토큰을 Decode하여 AccountId정보 취득
