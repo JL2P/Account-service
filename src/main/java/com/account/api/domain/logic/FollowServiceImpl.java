@@ -5,6 +5,7 @@ import com.account.api.domain.Follower;
 import com.account.api.domain.Following;
 import com.account.api.domain.service.FollowService;
 import com.account.api.exception.FollowCheckException;
+import com.account.api.exception.FollowerCheckException;
 import com.account.api.exception.FollowingCheckException;
 import com.account.api.repository.AccountRepository;
 import com.account.api.repository.FollowerRepository;
@@ -74,7 +75,18 @@ public class FollowServiceImpl implements FollowService {
         return false;
     }
 
+    @Override
+    public boolean followerCheck(String accountId1, String accountId2) throws FollowerCheckException {
+        Account account1 = accountRepository.findById(accountId1).orElseThrow();
+        Account account2 = accountRepository.findById(accountId2).orElseThrow();
 
+        System.out.println(accountId1 + " "+ accountId2);
+
+        if (followerRepository.findByAccountAndFollowerAndConfirm(account1, account2, "Y").isPresent()) {
+            return true;
+        }
+        else return false;
+    }
 
 
     @Override
@@ -118,6 +130,7 @@ public class FollowServiceImpl implements FollowService {
      * */
 
     //팔로우 요청 승인
+    @Override
     public void accept(String accountId, String followerId) {
 
         Account account = accountRepository.findById(accountId).orElseThrow();
@@ -134,6 +147,7 @@ public class FollowServiceImpl implements FollowService {
     }
 
     //팔로우 요청 거절  / 팔로워 리스트에서 팔로워 삭제
+    @Override
     public void refuse(String accountId, String followerId) {
 
         Account account = accountRepository.findById(accountId).orElseThrow();
