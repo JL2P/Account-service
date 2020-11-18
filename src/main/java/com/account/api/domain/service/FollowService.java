@@ -4,6 +4,7 @@ import com.account.api.domain.Account;
 import com.account.api.domain.Follower;
 import com.account.api.domain.Following;
 import com.account.api.exception.FollowCheckException;
+import com.account.api.exception.FollowerCheckException;
 import com.account.api.exception.FollowingCheckException;
 import com.account.api.web.dto.AccountDto;
 
@@ -18,11 +19,13 @@ public interface FollowService {
     public boolean followCheck(String myAccountId1, String myAccountId2) throws FollowCheckException;
     //내가 팔로잉하고 있는지 체크하는 함수.
     public boolean followingCheck(String accountId1, String accountId2) throws FollowingCheckException;
+    //나를 팔로잉하고 있는지 체크하는 함수(=나의 팔로워인지 체크하는 함수)
+    public boolean followerCheck(String accountId1, String accountId2) throws FollowerCheckException;
     //팔로우 기능
     public void follow(String myAccountId1, String myAccountId2);
     //팔로잉신청 수락 기능
     public void accept(String myAccountId1, String myAccountId2);
-    //팔로잉신청 거절 / 팔로워리스트에서 팔로워 삭제 기능 능
+    //팔로잉신청 거절 / 팔로워리스트에서 팔로워 삭제 기능
     public void refuse(String myAccountId1, String myAccountId2);
     //팔로잉리스트에서 팔로잉 삭제 기
     public void deleteMyfollowing(String accountId1, String accountId2);

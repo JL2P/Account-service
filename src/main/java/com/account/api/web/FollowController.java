@@ -6,6 +6,7 @@ import com.account.api.domain.Following;
 import com.account.api.domain.service.AccountService;
 import com.account.api.domain.service.FollowService;
 import com.account.api.exception.FollowCheckException;
+import com.account.api.exception.FollowerCheckException;
 import com.account.api.exception.FollowingCheckException;
 import com.account.api.web.dto.AccountDto;
 import com.account.api.web.dto.FollowDto;
@@ -47,6 +48,20 @@ public class FollowController {
 
         return new FollowStateDto(followService.followingCheck(accountId, followId));
     }
+
+    //팔로워인지 체크
+    @PostMapping("isfollower/{followId}")
+    public FollowStateDto followerCheck (@PathVariable String followId, HttpServletRequest request) throws FollowerCheckException {
+        String token = jwtTokenProvider.resolveToken(request);
+        String accountId = jwtTokenProvider.getAccountId(token);
+
+        return new FollowStateDto(followService.followerCheck(accountId, followId));
+
+    }
+
+
+
+
 
     @PostMapping("")
     public void follow(@RequestBody FollowDto followDto) throws FollowCheckException{
@@ -180,6 +195,8 @@ public class FollowController {
         error.setMessage(error.getMessage());
         return error;
     }
+
+
 
 
 }
