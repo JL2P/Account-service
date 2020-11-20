@@ -9,6 +9,8 @@ import com.account.api.web.dto.AccountDto;
 import com.account.api.web.dto.AccountModifyDto;
 import com.account.api.web.dto.AccountSigninDto;
 
+import com.account.api.web.dto.todo.GroupTodoAccountDto;
+import com.account.api.web.dto.todo.TodoAccountDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -73,6 +76,51 @@ public class AccountController {
     @DeleteMapping("/signout/{accountId}")
     public void deleteAccount(@PathVariable String accountId) {
         accountService.deleteAccount(accountId);
+    }
+
+
+    // Todo서비스에서 받아온 Todo데이터들 중에서 writer를 가지고 Account객체를 취득하여 넣어준다.
+    // MSA로 나누다보니 해당작업을 프론트에서 처리하려고 했으나.. 서버쪽에서 하는편이 더 좋을것 같다고 생각하여 추가
+    @PostMapping("/todos/mapping")
+    public List<TodoAccountDto> todosAccountIdMapping(@RequestBody ArrayList<TodoAccountDto> todoAccountDtos){
+
+        for(int i=0; i< todoAccountDtos.size(); i++) {
+            String todoAccountId = todoAccountDtos.get(i).getWriter();
+            todoAccountDtos.get(i).setAccountModel(accountService.getAccount(todoAccountId));
+
+            for(int j=0; j<todoAccountDtos.get(i).getComments().size(); j++){
+                String commentAccountId = todoAccountDtos.get(i).getComments().get(j).getWriter();
+                todoAccountDtos.get(i).getComments().get(j).setAccountModel(accountService.getAccount(commentAccountId));
+
+                for(int k=0; k< todoAccountDtos.get(i).getComments().get(j).getSubComments().size(); k++){
+                    String subCommentAccountId = todoAccountDtos.get(i).getComments().get(j).getSubComments().get(k).getWriter();
+                    todoAccountDtos.get(i).getComments().get(j).getSubComments().get(k).setAccountModel(accountService.getAccount(subCommentAccountId));
+                }
+            }
+        }
+        return todoAccountDtos;
+    }
+
+    // GroupTodo서비스에서 받아온 GroupTodo데이터들 중에서 writer를 가지고 Account객체를 취득하여 넣어준다.
+    // MSA로 나누다보니 해당작업을 프론트에서 처리하려고 했으나.. 서버쪽에서 하는편이 더 좋을것 같다고 생각하여 추가
+    @PostMapping("/grouptodos/mapping")
+    public List<GroupTodoAccountDto> grouptodosAccountIdMapping(@RequestBody ArrayList<GroupTodoAccountDto> groupTodoAccountDtos){
+
+        for(int i=0; i< groupTodoAccountDtos.size(); i++) {
+            String todoAccountId = groupTodoAccountDtos.get(i).getWriter();
+            groupTodoAccountDtos.get(i).setAccountModel(accountService.getAccount(todoAccountId));
+
+            for(int j=0; j<groupTodoAccountDtos.get(i).getComments().size(); j++){
+                String commentAccountId = groupTodoAccountDtos.get(i).getComments().get(j).getWriter();
+                groupTodoAccountDtos.get(i).getComments().get(j).setAccountModel(accountService.getAccount(commentAccountId));
+
+                for(int k=0; k< groupTodoAccountDtos.get(i).getComments().get(j).getSubComments().size(); k++){
+                    String subCommentAccountId = groupTodoAccountDtos.get(i).getComments().get(j).getSubComments().get(k).getWriter();
+                    groupTodoAccountDtos.get(i).getComments().get(j).getSubComments().get(k).setAccountModel(accountService.getAccount(subCommentAccountId));
+                }
+            }
+        }
+        return groupTodoAccountDtos;
     }
 
     @ExceptionHandler(RuntimeException.class)
