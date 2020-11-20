@@ -7,16 +7,5 @@ security:
       signkey: planit
 
 spring:
-  devtools:
-    livereload:
-      enabled: true
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/planit_account?useUnicode=true&charaterEncoding=utf-8&useSSL=false&serverTimezone=UTC
-    hikari:
-      username: planit
-      password: planit1234
-  jpa:
-    database-platform: org.hibernate.dialect.MariaDB53Dialect
-    hibernate:
-      ddl-auto: update
+  profiles:
+    active: dev

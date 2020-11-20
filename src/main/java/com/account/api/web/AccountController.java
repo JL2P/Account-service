@@ -4,10 +4,8 @@ package com.account.api.web;
 import com.account.api.config.JwtTokenProvider;
 import com.account.api.domain.Account;
 import com.account.api.domain.service.AccountService;
-import com.account.api.web.dto.AccountAddDto;
 import com.account.api.web.dto.AccountDto;
 import com.account.api.web.dto.AccountModifyDto;
-import com.account.api.web.dto.AccountSigninDto;
 
 import com.account.api.web.dto.todo.GroupTodoAccountDto;
 import com.account.api.web.dto.todo.TodoAccountDto;
@@ -15,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +31,13 @@ public class AccountController {
     private final AccountService accountService;
     //jwt토큰을 decode하기 위함
     private final JwtTokenProvider jwtTokenProvider;
+
+    @Value("${spring.profiles}")
+    private String profiles;
+    @GetMapping("/test")
+    public String testHello(){
+        return this.profiles;
+    }
 
     @ApiOperation(value = "유저 데이터 추가", notes = "회원가입시 인증서버에서 인증이 되었을 경우 유저 정보를 추가한다.")
     @PostMapping()
