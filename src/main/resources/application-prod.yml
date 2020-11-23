@@ -1,31 +1,12 @@
 spring:
   profiles: prod
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST}/${DB_NAME}?useSSL=false
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    hikari:
-      initialization-fail-timeout: 0
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://mysql-server-service.default.svc.cluster.local:3306?useUnicode=true&charaterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: planit
+    password: planit1234
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5Dialect
-    generate-ddl: true
+    database-platform: org.hibernate.dialect.MariaDB53Dialect
     show-sql: true
     hibernate:
       ddl-auto: create
-
-#spring:
-#  profiles: prod
-#  devtools:
-#    livereload:
-#      enabled: true
-#  datasource:
-#    driver-class-name: org.mariadb.jdbc.Driver
-#    url: jdbc:mysql://docker-mariaDB/planit_account?useUnicode=true&charaterEncoding=utf-8&useSSL=false&serverTimezone=UTC
-#    hikari:
-#      username: planit
-#      password: planit1234
-#  jpa:
-#    database-platform: org.hibernate.dialect.MariaDB53Dialect
-#    hibernate:
-#      ddl-auto: create

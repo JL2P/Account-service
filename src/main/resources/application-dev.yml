@@ -1,11 +1,10 @@
-
 spring:
   profiles: dev
   devtools:
     livereload:
       enabled: true
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mysql://localhost:3306/planit_account?useUnicode=true&charaterEncoding=utf-8&useSSL=false&serverTimezone=UTC
     username: planit
     password: planit1234
