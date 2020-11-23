@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-server-deployment
+spec:
+  selector:
+    matchLabels:
+      app: spring-server
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: spring-server
+    spec:
+      containers:
+        - name: spring-server
+          image: shoon2430/account-service:v2
+          ports:
+            - containerPort: 9005
