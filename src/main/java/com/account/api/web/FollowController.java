@@ -49,6 +49,16 @@ public class FollowController {
         return new FollowStateDto(followService.followingCheck(accountId, followId));
     }
 
+    @PostMapping("/isfollowingPage/{followId}")
+    public FollowStateDto followingPageCheck(@PathVariable String followId, HttpServletRequest request)throws FollowingCheckException {
+        //토큰 취득
+        String token = jwtTokenProvider.resolveToken(request);
+        //토큰을 Decode하여 AccountId정보 취득
+        String accountId = jwtTokenProvider.getAccountId(token);
+
+        return new FollowStateDto(followService.followingCheck(accountId, followId));
+    }
+
     //팔로워인지 체크
     @PostMapping("isfollower/{followId}")
     public FollowStateDto followerCheck (@PathVariable String followId, HttpServletRequest request) throws FollowerCheckException {
