@@ -32,11 +32,9 @@ public class AccountController {
     //jwt토큰을 decode하기 위함
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Value("${spring.profiles}")
-    private String profiles;
     @GetMapping("/test")
     public String testHello(){
-        return this.profiles;
+        return "TEST";
     }
 
     @ApiOperation(value = "유저 데이터 추가", notes = "회원가입시 인증서버에서 인증이 되었을 경우 유저 정보를 추가한다.")

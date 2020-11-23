@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: spring-server-service
+spec:
+  clusterIP: None
+  ports:
+    - port: 9005
+      targetPort: 9005
+      protocol: TCP
+      name: server-port
+  selector:
+    app: spring-server
