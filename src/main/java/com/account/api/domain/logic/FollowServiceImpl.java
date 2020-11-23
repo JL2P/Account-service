@@ -112,10 +112,8 @@ public class FollowServiceImpl implements FollowService {
                     .confirm("N").build();
 
             // 공개계정일경우 자동으로 승인처리
-            if (account1.getOpenAt() != null && account1.getOpenAt().equals("Y")) {
-                follower.setConfirm("Y");
-            }
             if (account2.getOpenAt() != null && account2.getOpenAt().equals("Y")) {
+                follower.setConfirm("Y");
                 following.setConfirm("Y");
             }
             followerRepository.save(follower);

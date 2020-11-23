@@ -24,7 +24,12 @@ dependencies {
 	//스프링 부트용 Spring Data Jpa 추상화 라이브러리
 	//스프링 부트 버전에 맞춰 자동으로 JPA관련 라이브러리들의 버전을 관리해줌
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.2'
+
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
+
+
+//	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.2'
 	// 롬복
 	// 이거 추가해야 한다 gradle 5버전부터는..
 	annotationProcessor("org.projectlombok:lombok")
