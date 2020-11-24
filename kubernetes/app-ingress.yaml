@@ -11,7 +11,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /api/accounts/*
+          - path: /*
             backend:
-              serviceName: "spring-server-service"
+              serviceName: "spring-account-service"
               servicePort: 9005
