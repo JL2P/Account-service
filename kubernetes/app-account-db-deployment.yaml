@@ -37,9 +37,9 @@ spec:
             - containerPort: 3306
               name: account-db
           volumeMounts: # Mounting voulume obtained from Persistent Volume Claim
-            - name: mariadb-persistent-storage
+            - name: account-db-persistent-storage
               mountPath: /var/lib/mysql #This is the path in the container on which the mounting will take place.
       volumes:
-        - name: mariadb-persistent-storage # Obtaining 'vloume' from PVC
+        - name: account-db-persistent-storage # Obtaining 'vloume' from PVC
           persistentVolumeClaim:
-            claimName: mariadb-pv-claim
+            claimName: account-db-pv-claim
