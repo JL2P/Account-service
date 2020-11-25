@@ -14,7 +14,7 @@ services:
 
   docker-spring:
     container_name: docker-spring
-    image: shoon2430/account-service:t1
+    image: shoon2430/account-auth:t1
     restart: on-failure
     depends_on:
       - docker-mariaDB

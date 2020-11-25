@@ -22,6 +22,7 @@ public class TodoAccountDto {
     private boolean likeState;  // 좋아요 했는지 체크
     private String completed;   // 계획 완료 여부 (완료:Y 미완료:N)
     private List<CommentDto> comments;
+    private List<TodoGalleryDto> galleries; //이미지
     private LocalDateTime created;
     private LocalDateTime modified;
     private AccountDto accountModel;
