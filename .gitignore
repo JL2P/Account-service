@@ -37,3 +37,6 @@ out/
 .vscode/
 
 kubernetes/ingress-controller.yaml
+
+# s3 막음
+src/main/resources/application-dev.yaml

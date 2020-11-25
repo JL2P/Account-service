@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,9 +25,11 @@ public class AccountDto {
     private String loginType;
     private String openAt;
     private String usedAt;
+    private List<GalleryDto> galleries;
 
     public AccountDto(Account account){
         BeanUtils.copyProperties(account, this);
+        this.galleries = account.getGalleries().stream().map(gallery -> new GalleryDto(gallery)).collect(Collectors.toList());
     }
 
     public Account toEntity(){

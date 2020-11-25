@@ -3,10 +3,9 @@ package com.account.api.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @ToString
 @Builder
@@ -36,5 +35,9 @@ public class Account extends CommonDateEntity {
     private String loginType; // (NAVER, GOOGLE... )소셜 로그인 타입
     private String openAt = "Y";    // (공계 Y / 미공개 N) 계정 공개여부 (기본값 공개)
     private String usedAt = "Y";    // (사용중 Y / 미사용 N)계정 사용여부 (기본값 사용중)
+
+    //AccountGallery
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Gallery> galleries = new ArrayList<>();
 
 }
