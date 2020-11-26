@@ -13,7 +13,7 @@ import lombok.Setter;
 public class AccountModifyDto {
     // AccountModifyDto랑 프론트쪽으이 AccountModifyModel이랑 매핑이 되어야함
     private String accountId;
-    private String email;
+//    private String email;
     private String name;
     private String birth;
     private String gender;
@@ -24,7 +24,8 @@ public class AccountModifyDto {
     public Account toEntity(Account account){
         account.setAccountId(this.accountId);
         account.setImgUrl(account.getImgUrl());
-        account.setEmail(this.email);
+        //이메일은 수정되면 안됨
+        account.setEmail(account.getEmail());
         account.setName(this.name);
         account.setBirth(this.birth);
         account.setGender(this.gender);
