@@ -3,7 +3,7 @@ version: "3"
 services:
   docker-mariaDB:
     container_name: docker-mariaDB
-    image: shoon2430/mariadb:v1
+    image: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: planit_account
