@@ -2,6 +2,7 @@ package com.account.api.domain.logic;
 
 import com.account.api.domain.Account;
 import com.account.api.domain.service.AccountService;
+import com.account.api.exception.AccountNotExistException;
 import com.account.api.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void addAccount(Account account) {
+        if(isExist(account.getAccountId()))throw new AccountNotExistException(account.getAccountId().toString());
         accountRepository.save(account);
     }
 
@@ -44,6 +46,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account modifyAccount(Account account) {
+        if(isExist(account.getAccountId()))throw new AccountNotExistException(account.getAccountId().toString());
         accountRepository.save(account);
         return account;
     }
@@ -51,6 +54,16 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount(String accountId) {
         accountRepository.deleteById(accountId);
+    }
+
+    @Override
+    public boolean isExist(String  accountId) {
+        Optional<Account> accountOpt = accountRepository.findById(accountId);
+        //Optional안에 todo객체가 존재하는 경우
+        if(accountOpt.isPresent()) return true;
+
+        //Optional안에 todo객체가 존재하지 않는 경우
+        return false;
     }
 
 }
