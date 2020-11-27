@@ -24,6 +24,7 @@ public class GroupTodoAccountDto {
     private String writer;      // 작성자ID
     private int likePoint;      // 좋아요 갯수
     private boolean likeState;  // 좋아요 했는지 체크
+    private List<TodoGalleryDto> galleries;
     private List<GroupTodoMemberDto> members;
     private List<CommentDto> comments;
     private LocalDateTime created;
