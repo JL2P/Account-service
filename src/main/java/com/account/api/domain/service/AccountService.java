@@ -15,6 +15,7 @@ public interface AccountService {
     public Account getAccount(String accountId);
     public Account modifyAccount(Account account);
     public void deleteAccount(String accountId);
+    public boolean isExist(String accountId);
 
 
 }

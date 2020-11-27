@@ -37,6 +37,7 @@ public class Account extends CommonDateEntity {
     private String usedAt = "Y";    // (사용중 Y / 미사용 N)계정 사용여부 (기본값 사용중)
 
     //AccountGallery
+    @Builder.Default
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Gallery> galleries = new ArrayList<>();
 
