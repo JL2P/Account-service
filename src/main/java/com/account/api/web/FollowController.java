@@ -12,6 +12,7 @@ import com.account.api.web.dto.AccountDto;
 import com.account.api.web.dto.FollowDto;
 import com.account.api.web.dto.FollowStateDto;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class FollowController {
     private final AccountService accountService;
     private final JwtTokenProvider jwtTokenProvider;
     //팔로우 체크
+    @ApiOperation(value = "팔로우 체크", notes = "url에서 취득한 예비 팔로워 정보와 JWT에서 취득한 내 정보를 팔로워 테이블에서 일치하는 데이터가 있는지 확인한다.")
     @PostMapping("/isfollow/{followId}")
     public FollowStateDto followCheck(@PathVariable String followId, HttpServletRequest request)throws FollowCheckException {
         //토큰 취득
@@ -38,7 +40,7 @@ public class FollowController {
 
         return new FollowStateDto(followService.followCheck(accountId, followId));
     }
-
+    @ApiOperation(value = "팔로잉 체크", notes = "나를 팔로잉하고 있는지(나의 팔로워리스트에 포함) 확인한다.")
     @PostMapping("/isfollowing/{followId}")
     public FollowStateDto followingCheck(@PathVariable String followId, HttpServletRequest request)throws FollowingCheckException {
         //토큰 취득
@@ -48,7 +50,7 @@ public class FollowController {
 
         return new FollowStateDto(followService.followingCheck(accountId, followId));
     }
-
+    @ApiOperation(value = "팔로잉페이지 체크", notes = "팔로잉하고 있는 계정의 프로필페이지인지 확인한다")
     @PostMapping("/isfollowingPage/{followId}")
     public FollowStateDto followingPageCheck(@PathVariable String followId, HttpServletRequest request)throws FollowingCheckException {
         //토큰 취득
@@ -58,7 +60,7 @@ public class FollowController {
 
         return new FollowStateDto(followService.followingCheck(accountId, followId));
     }
-
+    @ApiOperation(value = "팔로워 체크", notes = "내가 팔로잉하고 있는지(나의 팔로잉리스트에 포함) 확인한다.")
     //팔로워인지 체크
     @PostMapping("isfollower/{followId}")
     public FollowStateDto followerCheck (@PathVariable String followId, HttpServletRequest request) throws FollowerCheckException {
@@ -72,7 +74,7 @@ public class FollowController {
 
 
 
-
+    @ApiOperation(value = "계정 팔로우", notes = "팔로잉하고 싶은 계정을 팔로잉, 팔로워 테이블에 추가한다")
     @PostMapping("")
     public void follow(@RequestBody FollowDto followDto) throws FollowCheckException{
         // make follow function
@@ -83,6 +85,7 @@ public class FollowController {
     }
 
     //아직 나에게 confirm 받지 않은 나의 팔로워 리스트 조회
+    @ApiOperation(value = "아직 나에게 confirm받지 않은 나의 예비 팔로워 리스트 조회")
     @GetMapping("")
     public List<AccountDto> getAllFollowers(HttpServletRequest request) {
 
@@ -97,6 +100,7 @@ public class FollowController {
 
 
     //post 는 생성 put 은 수정을 많이 한다.
+    @ApiOperation(value = "팔로잉 신청 수락", notes = "팔로잉 요청 수락하면 confirm 상태를 업데이트하여 나의 팔로워 리스트, 상대방의 팔로잉 리스트에 추가한")
     @PutMapping("/confirm/{followId}")
     public void confirm(@PathVariable String followId, HttpServletRequest request) {
         //토큰 취득
@@ -106,7 +110,7 @@ public class FollowController {
 
         followService.accept(accountId, followId);
     }
-
+    @ApiOperation(value = "팔로잉 신청 거절")
     @DeleteMapping("/refuse/{followId}")
     public void refuse(@PathVariable String followId, HttpServletRequest request) {
         //토큰 취득
@@ -117,7 +121,7 @@ public class FollowController {
         followService.refuse(accountId, followId);
 
     }
-
+    @ApiOperation(value = "나의 팔로워 삭제", notes = "나를 팔로잉하는 사람을 삭제한다")
     @DeleteMapping("/delete/{followId}")
     public void deleteMyfollowing(@PathVariable String followId, HttpServletRequest request) {
         //토큰에서 내 정보 추출
@@ -127,7 +131,7 @@ public class FollowController {
         followService.deleteMyfollowing(accountId, followId);
 
     }
-
+    @ApiOperation(value = "나의 팔로워리스트 조회")
     @GetMapping("/myFollowerList")
     public List<AccountDto> getMyFollowers(HttpServletRequest request) {
 
@@ -139,7 +143,7 @@ public class FollowController {
         return followers.stream().map(follow -> new AccountDto(follow)).collect(Collectors.toList());
     }
 
-
+    @ApiOperation(value = "나의 팔로잉 리스트 조회")
     @GetMapping("/followingList")
     public void getFollowings(@RequestBody FollowDto followDto) {
 
@@ -148,6 +152,7 @@ public class FollowController {
 
     //승훈 생성
     //내가 팔로우를 신청한 사람들중에 나를 승인한 사람들의 데이터를 보내준다.
+    @ApiOperation(value = "팔로잉 체크")
     @GetMapping("/myFollowingList")
     public List<AccountDto> getMyFollowings(HttpServletRequest request) {
         //토큰에서 내 정보 추출
@@ -182,6 +187,7 @@ public class FollowController {
 
     // 승훈 추가
     // 기존에 token에서 account정보를 가지고 오는 함수(getMyFollowers)를 url에서 가지고 오도록 변경된 함수
+    @ApiOperation(value = "url에서 account정보 가져옴", notes = "기존에 token에서 account정보를 가지고 오는 함수(getMyFollowers)를 url에서 가지고 오도록 변경된 함수")
     @GetMapping("{accountId}/followers")
     public List<AccountDto> getFollowers(@PathVariable String accountId) {
         List<Account> followers = followService.getMyFollowers(accountId);
@@ -189,6 +195,7 @@ public class FollowController {
     }
 
     // 기존에 token에서 account정보를 가지고 오는 함수(getMyFollowings)를 url에서 가지고 오도록 변경된 함수
+    @ApiOperation(value = "url에서 account정보 가져옴", notes ="기존에 token에서 account정보를 가지고 오는 함수(getMyFollowings)를 url에서 가지고 오도록 변경된 함수" )
     @GetMapping("{accountId}/followings")
     public List<AccountDto> getFollowings(@PathVariable String accountId) {
         //내가 팔로우를 신청한 사람들 중 나를 승인한 사람들 (Following테이블에서 가져오기)
