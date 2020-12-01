@@ -46,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account modifyAccount(Account account) {
-        if(isExist(account.getAccountId()))throw new AccountNotExistException(account.getAccountId().toString());
+        if(!isExist(account.getAccountId()))throw new AccountNotExistException(account.getAccountId().toString());
         accountRepository.save(account);
         return account;
     }
