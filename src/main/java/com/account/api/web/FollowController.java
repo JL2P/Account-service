@@ -2,6 +2,7 @@ package com.account.api.web;
 
 import com.account.api.config.JwtTokenProvider;
 import com.account.api.domain.Account;
+import com.account.api.domain.Follower;
 import com.account.api.domain.Following;
 import com.account.api.domain.service.AccountService;
 import com.account.api.domain.service.FollowService;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +52,7 @@ public class FollowController {
 
         return new FollowStateDto(followService.followingCheck(accountId, followId));
     }
+
     @ApiOperation(value = "팔로잉페이지 체크", notes = "팔로잉하고 있는 계정의 프로필페이지인지 확인한다")
     @PostMapping("/isfollowingPage/{followId}")
     public FollowStateDto followingPageCheck(@PathVariable String followId, HttpServletRequest request)throws FollowingCheckException {
@@ -71,7 +74,17 @@ public class FollowController {
 
     }
 
-
+//    @ApiOperation(value = "팔로워 체크", notes = "나를 팔로잉하고 있는지(나의 팔로워리스트에 포함) 확인한다.")
+//    @PostMapping("isfollowers")
+//    public List<FollowStateDto> followerListCheck (@RequestBody ArrayList<FollowDto> followDtos, HttpServletRequest request) throws FollowerCheckException {
+//        String token = jwtTokenProvider.resolveToken(request);
+//        String accountId = jwtTokenProvider.getAccountId(token);
+//
+//        List<Follower> followers = followDtos.stream().map(followDto->followService.followerCheck(followDto.getMyAccountId(), followDto.getFollowAccountId())).collect(Collectors.toList());
+//
+//        return new FollowStateDto(followService.followerCheck(accountId, followId));
+//
+//}
 
 
     @ApiOperation(value = "계정 팔로우", notes = "팔로잉하고 싶은 계정을 팔로잉, 팔로워 테이블에 추가한다")
