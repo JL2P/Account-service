@@ -21,6 +21,10 @@ public interface FollowService {
     public boolean followingCheck(String accountId1, String accountId2) throws FollowingCheckException;
     //나를 팔로잉하고 있는지 체크하는 함수(=나의 팔로워인지 체크하는 함수)
     public boolean followerCheck(String accountId1, String accountId2) throws FollowerCheckException;
+
+    //
+
+
     //팔로우 기능
     public void follow(String myAccountId1, String myAccountId2);
     //팔로잉신청 수락 기능
