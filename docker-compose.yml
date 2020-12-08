@@ -13,7 +13,7 @@ services:
       - 8005:3306
 
   docker-spring:
-    container_name: docker-spring
+    container_name: docker-account
     image: dlaudghtn/account-service:v1
     restart: on-failure
     depends_on:
