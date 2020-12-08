@@ -17,6 +17,6 @@ services:
     image: dlaudghtn/account-service:v1
     restart: on-failure
     depends_on:
-      - docker-mariaDB
+      - docker-accountDB
     ports:
       - 9005:9005
