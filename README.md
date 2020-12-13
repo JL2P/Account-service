@@ -60,8 +60,8 @@
 
 ### 2. 도메인 모델링
 
-![AccountModel](img/AccountModel.png)
+![AccountModel](readmeImg/AccountModel.png)
 
 ### 3. 테이블 구조
 
-![AccountTable](img/AccountTable.png)
+![AccountTable](readmeImg/AccountTable.png)
