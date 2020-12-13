@@ -60,8 +60,8 @@
 
 ### 2. 도메인 모델링
 
-![AccountModel](https://github.com/JL2P/Project/tree/master/img/AccountModel.png)
+![AccountModel](img/AccountModel.png)
 
 ### 3. 테이블 구조
 
-![AccountTable](https://github.com/JL2P/Project/tree/master/img/AccountTable.png)
+![AccountTable](img/AccountTable.png)
